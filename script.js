@@ -23,6 +23,55 @@ function formatDate(timestamp) {
   return `${day} ${hours}:${minutes}`;
 }
 
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  return days[day];
+}
+
+function displayForecast(response) {
+  console.log(response.data.daily);
+
+  let forecast = response.data.daily;
+
+  let forecastElement = document.querySelector("#forecast");
+
+  let forecastHTMl = `<div class="row">`;
+  forecast.foreEach(function (forecastDay, index) {
+    if (index < 5) {
+      forecastHTMl =
+        forecastHTMl +
+        `
+      <div class="col-2">
+        <div class="weather-forecast-date">${formatDay(formatatDay.dt)}</div>
+        <img
+          src="https://openweathermap.org/img/wn/${
+            forecastDay.weather[0].icon
+          }@2x.png"@2x.png"
+          alt=""
+          width="42"
+        />
+        <div class="weather-forecast-temperature">
+          <span class="weather-forecast-temperature-max">${Math.round(
+            forecastDay.temp.max
+          )}°</span>
+          <span class="weather-forecast-temperature-min">${Math.round(
+            forecastDay.temp.min
+          )}°</span>
+        </div>
+      </div>
+
+  `;
+    }
+  });
+
+  forecastHTMl = forecastHTMl + `</div>`;
+  forecastElement.innerHTML = forecastHTMl;
+  console.log(forecastHTMl);
+}
+
 function displayTemperature(response) {
   let temperatureElement = document.querySelector("#temperature");
   let cityElement = document.querySelector("#city");
@@ -88,3 +137,4 @@ let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", displayCelsiusTemperature);
 
 search("lagos");
+displayForecast();
