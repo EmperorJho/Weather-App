@@ -39,13 +39,13 @@ function displayForecast(response) {
   let forecastElement = document.querySelector("#forecast");
 
   let forecastHTMl = `<div class="row">`;
-  forecast.foreEach(function (forecastDay, index) {
+  forecast.forEach(function (forecastDay, index) {
     if (index < 5) {
       forecastHTMl =
         forecastHTMl +
         `
       <div class="col-2">
-        <div class="weather-forecast-date">${formatDay(formatatDay.dt)}</div>
+        <div class="weather-forecast-date">${formatDay(forecastDay.dt)}</div>
         <img
           src="https://openweathermap.org/img/wn/${
             forecastDay.weather[0].icon
@@ -72,6 +72,12 @@ function displayForecast(response) {
   console.log(forecastHTMl);
 }
 
+function getForecast(coordinates) {
+  let apiKey = "cabdbda40038ba7d1165b953b1c7bd6c";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayForecast);
+}
+
 function displayTemperature(response) {
   let temperatureElement = document.querySelector("#temperature");
   let cityElement = document.querySelector("#city");
@@ -94,6 +100,7 @@ function displayTemperature(response) {
     `https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
   );
   iconElement.setAttribute("alt", response.data.weather[0].description);
+  getForecast(response.data.coord);
 }
 
 function search(city) {
@@ -137,4 +144,3 @@ let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", displayCelsiusTemperature);
 
 search("lagos");
-displayForecast();
